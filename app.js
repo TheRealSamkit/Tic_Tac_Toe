@@ -6,7 +6,13 @@ let msg = document.querySelector("#msg");
 
 let turnO = true; //playerX, playerO
 let count = 0; //To Track Draw
-
+let O = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+              <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
+            </svg>`;
+let X = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+              <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
+              <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
+            </svg>`;
 const winPatterns = [
     [0, 1, 2],
     [0, 3, 6],
@@ -74,19 +80,19 @@ const enableBoxes = () => {
 
 const showWinner = (winner) => {
     msg.innerText = `Congratulations, Winner is ${winner}`;
-    msgContainer.classList.remove("hide");
+    msg.classList.remove("hide");
+    resetBtn.innerText = "New Game..?"
     disableBoxes();
 };
 
 const checkWinner = () => {
     for (let pattern of winPatterns) {
-        let pos1Val = boxes[pattern[0]].innerText;
-        let pos2Val = boxes[pattern[1]].innerText;
-        let pos3Val = boxes[pattern[2]].innerText;
-
+        let pos1Val = boxes[pattern[0]].innerHTML;
+        let pos2Val = boxes[pattern[1]].innerHTML;
+        let pos3Val = boxes[pattern[2]].innerHTML;
         if (pos1Val != "" && pos2Val != "" && pos3Val != "") {
             if (pos1Val === pos2Val && pos2Val === pos3Val) {
-                showWinner(pos1Val);
+                showWinner(pos1Val === 'O' ? "O" : "X");
                 return true;
             }
         }
@@ -95,17 +101,9 @@ const checkWinner = () => {
 
 const placeMarker = (box, marker) => {
     if (!box.innerHTML) {
-        box.innerHTML = marker === 'O' ? `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
-              <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
-            </svg>` : `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
-              <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
-              <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
-            </svg>`;
+        box.innerHTML = marker === 'O' ? O : X;
     }
 }
 
 
-newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);

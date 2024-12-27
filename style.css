@@ -7,6 +7,10 @@
   body {
     background-color: #0e2425;
     text-align: center;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   
   .container {
@@ -129,16 +133,8 @@
   
   #msg {
     color: #ffffc7;
-    font-size: 5vmin;
-  }
-  
-  .msg-container {
-    height: 100vmin;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 4rem;
+    font-size: 1.8rem;
+    margin:.5em
   }
   
   .hide {
@@ -151,3 +147,18 @@
     border-radius:5px;
     padding: .4em;
   }
+
+  .love {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 400;
+    align-self: center;
+    position: absolute;
+    bottom: .5em;
+}
+
+.love:active {
+    text-decoration: none;
+    color:#fff;
+}
