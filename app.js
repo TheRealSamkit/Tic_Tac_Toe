@@ -29,12 +29,14 @@ boxes.forEach((box) => {
     box.addEventListener("click", () => {
         if (turnO) {
             //playerO
-            box.innerText = "O";
+            placeMarker(box, 'O')
+            box.classList.add("O");
             turnO = false;
         } else {
             //playerX
-            box.innerText = "X";
+            placeMarker(box, 'X')
             turnO = true;
+            box.classList.add("X");
         }
         box.disabled = true;
         count++;
@@ -54,16 +56,20 @@ const gameDraw = () => {
 };
 
 const disableBoxes = () => {
-    for (let box of boxes) {
+    boxes.forEach((box) => {
         box.disabled = true;
     }
+    )
 };
 
+
 const enableBoxes = () => {
-    for (let box of boxes) {
+    boxes.forEach((box) => {
         box.disabled = false;
         box.innerText = "";
+        box.classList.remove("X", "O");
     }
+    )
 };
 
 const showWinner = (winner) => {
@@ -86,6 +92,20 @@ const checkWinner = () => {
         }
     }
 };
+
+const placeMarker = (box, marker) => {
+    if (!box.innerHTML) {
+        box.innerHTML = marker === 'O' ? `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+              <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
+            </svg>` : `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+              <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
+              <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
+            </svg>`;
+    }
+}
+
 
 newGameBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
