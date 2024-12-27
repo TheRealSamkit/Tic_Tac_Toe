@@ -22,23 +22,23 @@
   }
   
   .game {
-    height: 60vmin;
-    width: 60vmin;
+    height: 58vmin;
+    width: 58vmin;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1.5vmin;
+    gap: 2vmin;
+    background-color: #fff;
   }
-  
+
   .box {
     height: 18vmin;
     width: 18vmin;
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     border: none;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
     font-size: 8vmin;
-    background-color: #ffffc7;
+    background-color: #0e2425;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,3 +162,7 @@
     text-decoration: none;
     color:#fff;
 }
+/* 
+.box:nth-child(1){
+    border-right: 10px solid white;
+} */
