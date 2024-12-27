@@ -166,3 +166,7 @@
 .box:nth-child(1){
     border-right: 10px solid white;
 } */
+
+.vanish{
+  opacity: 25%;
+}
