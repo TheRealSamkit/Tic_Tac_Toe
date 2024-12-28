@@ -1,157 +1,142 @@
-let boxes = document.querySelectorAll(".box");
-let resetBtn = document.querySelector("#reset-btn");
-let newGameBtn = document.querySelector("#new-btn");
-let msgContainer = document.querySelector(".msg-container");
-let msg = document.querySelector("#msg");
+// DOM Elements
+const boxes = document.querySelectorAll(".box");
+const resetBtn = document.querySelector("#reset-btn");
+const startBtn = document.querySelector("#start-btn");
+const msg = document.querySelector("#msg");
 
-let turnO = true; //playerX, playerO
-let O = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
-              <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
-            </svg>`;
-let X = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
-              <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
-              <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
-            </svg>`;
+// Game Variables
+let turnO = true;
+let turns = [];
+let count = 0;
+
+// Markers
+const O = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
+    <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
+  </svg>`;
+const X = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
+    <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
+    <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
+  </svg>`;
+
+// Winning Patterns
 const winPatterns = [
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 5, 8],
-    [2, 4, 6],
-    [3, 4, 5],
-    [6, 7, 8],
+    [0, 1, 2], [0, 3, 6], [0, 4, 8],
+    [1, 4, 7], [2, 5, 8], [2, 4, 6],
+    [3, 4, 5], [6, 7, 8],
 ];
 
-let turns = [];
-
+// Reset Game
 const resetGame = () => {
     turnO = true;
     turns = [];
-    enableBoxes();
     msg.classList.add("hide");
     boxes.forEach((box) => {
-        box.removeAttribute("data-marker")
-    })
-};
-
-boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-        if (turnO) {
-            //playerO
-            placeMarker(box, 'O')
-            turnO = false;
-        } else {
-            //playerX
-            placeMarker(box, 'X')
-            turnO = true;
-        }
-        box.disabled = true;
-        turns.unshift(box);
-        if (turns.length > 4) {
-            let vanishBox = turns[turns.length - 1];
-            let svg = vanishBox.querySelector("svg");
-            svg.classList.add("vanish");
-        }
-        if (turns.length > 5) {
-            let lastTurn = turns.pop();
-            lastTurn.disabled = false;
-            lastTurn.innerHTML = "";
-            lastTurn.removeAttribute("data-marker");
-        }
-
-        checkWinner();
-    });
-});
-
-const gameDraw = () => {
-    msg.innerText = `Game was a Draw.`;
-    msgContainer.classList.remove("hide");
-    disableBoxes();
-};
-
-const disableBoxes = () => {
-    boxes.forEach((box) => {
-        box.disabled = true;
-    }
-    )
-};
-
-
-const enableBoxes = () => {
-    boxes.forEach((box) => {
+        box.innerHTML = "";
         box.disabled = false;
-        box.innerText = "";
-        box.classList.remove("X", "O");
-    }
-    )
+        box.removeAttribute("data-marker");
+        box.classList.remove("vanish");
+    });
+    resetBtn.innerText = "Reset Game";
+    count = 0;
 };
 
+// Place Marker
+const placeMarker = (box, marker) => {
+    if (!box.innerHTML) {
+        box.innerHTML = marker === "O" ? O : X;
+        box.setAttribute("data-marker", marker);
+    }
+};
+
+// Disable All Boxes
+const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
+
+// Show Winner
 const showWinner = (winner) => {
-    console.log(winner)
     msg.innerText = `Congratulations, Winner is ${winner}`;
     msg.classList.remove("hide");
-    resetBtn.innerText = "New Game..?"
-    disableBoxes();
+    resetBtn.innerText = "New Game..?";
     confettiAnimation();
+    disableBoxes();
 };
+
+// Check for Winner
 const checkWinner = () => {
-    for (let pattern of winPatterns) {
-        let pos1 = boxes[pattern[0]];
-        let pos2 = boxes[pattern[1]];
-        let pos3 = boxes[pattern[2]];
-
-        let pos1Marker = pos1.getAttribute("data-marker");
-        let pos2Marker = pos2.getAttribute("data-marker");
-        let pos3Marker = pos3.getAttribute("data-marker");
-
-        if (pos1Marker && pos1Marker === pos2Marker && pos2Marker === pos3Marker) {
-            console.log("Winning pattern:", pattern); // Debugging
-            showWinner(pos1Marker); // Pass the actual winner
+    for (let [a, b, c] of winPatterns) {
+        const [pos1, pos2, pos3] = [boxes[a], boxes[b], boxes[c]];
+        const [marker1, marker2, marker3] = [
+            pos1.getAttribute("data-marker"),
+            pos2.getAttribute("data-marker"),
+            pos3.getAttribute("data-marker"),
+        ];
+        if (marker1 && marker1 === marker2 && marker2 === marker3) {
+            showWinner(marker1);
             return true;
         }
     }
-    return false; // No winner found
+    return false;
 };
 
+// Handle Draw
+const gameDraw = () => {
+    msg.innerText = `You have taken too much time game is Draw.`;
+    msg.classList.remove("hide");
+    disableBoxes();
+};
 
-const placeMarker = (box, marker) => {
-    if (!box.innerHTML) {
-        box.innerHTML = (marker === 'O' ? O : X);
-        box.setAttribute("data-marker", marker);
+// Remove Turns
+const turnRemover = () => {
+    if (turns.length > 4) {
+        const vanishBox = turns[4];
+        const svg = vanishBox?.querySelector("svg");
+        svg?.classList.add("vanish");
     }
-}
+    if (turns.length > 5) {
+        const lastTurn = turns.pop();
+        lastTurn.disabled = false;
+        lastTurn.innerHTML = "";
+        lastTurn.removeAttribute("data-marker");
+        lastTurn.querySelector("svg")?.classList.remove("vanish");
+    }
+};
 
+// Box Click Handler
+boxes.forEach((box) =>
+    box.addEventListener("click", () => {
+        placeMarker(box, turnO ? "O" : "X");
+        turns.unshift(box);
+        turnRemover();
+        turnO = !turnO;
+        box.disabled = true;
+        count++;
+        if (count === 50) gameDraw();
+        checkWinner();
+    })
+);
+
+// Confetti Animation
 const confettiAnimation = () => {
-    let duration = 5 * 1000;
-    let animationEnd = Date.now() + duration;
-    let defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const duration = 5000; // 5 seconds
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-    function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-    }
+    const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        if (timeLeft <= 0) return clearInterval(interval);
 
-    let interval = setInterval(function () {
-        let timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-            return clearInterval(interval);
-        }
-
-        let particleCount = 50 * (timeLeft / duration);
-        confetti(
-            Object.assign({}, defaults, {
+        const particleCount = 50 * (timeLeft / duration);
+        const createConfetti = (x) =>
+            confetti({
+                ...defaults,
                 particleCount,
-                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-            })
-        );
-        confetti(
-            Object.assign({}, defaults, {
-                particleCount,
-                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-            })
-        );
+                origin: { x, y: Math.random() - 0.2 },
+            });
+        createConfetti(0.2);
+        createConfetti(0.8);
     }, 250);
-}
+};
 
+// Reset Button Event
 resetBtn.addEventListener("click", resetGame);
