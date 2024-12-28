@@ -2,39 +2,58 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-Tac-Toe Game</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Unkempt:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Unkempt:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <main>
-        <h1 class="title">Tic Tac Toe</h1>
-        <button id="start-btn" class="btn">Start Game</button>
-        <div class="container">
-            <div class="game">
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
-                <button class="box"></button>
+        <h1 class="title" title="Game Title">Tic Tac Toe</h1>
+        <!-- Game Initialization Section -->
+        <div id="initializer" class="initializer" title="Game Initialization Section">
+            <button id="start-btn" class="btn" title="Click to Start the Game">Start Game</button>
+            <div id="mode-selection" class="hide initializer">
+                <button data-mode="pvp" class="btn" title="Player VS Player Mode" id="mode-select">Player VS
+                    Player</button>
+                <button data-mode="pvc" class="btn" title="Player VS Computer Mode" id="mode-select">Player VS
+                    Computer</button>
+            </div>
+            <div id="difficulty-selection" class="hide">
+                <button data-difficulty="easy" class="btn" title="Easy Difficulty">Easy</button>
+                <button data-difficulty="hard" class="btn" title="Hard Difficulty">Hard</button>
             </div>
         </div>
-        <p id="msg" class="hide"></p>
-        <button id="reset-btn" class="btn">Reset Game</button>
+
+        <!-- Game Board Section -->
+        <div class="container hide" id="gameContainer" title="Game Board">
+            <div class="game">
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+                <button class="box" title="Game Box"></button>
+            </div>
+        </div>
+
+        <!-- Message and Reset -->
+        <p id="msg" class="hide" title="Game Status Message"></p>
+        <button id="reset-btn" class="btn hide" title="Click to Reset the Game">Reset Game</button>
     </main>
-    <a href="https://github.com/TheRealSamkit/Tic_Tac_Toe" class="love" title="View the source code on GitHub">Made
-        with
-        💖 by Samkit Jain</a>
+
+    <a href="https://github.com/TheRealSamkit/Tic_Tac_Toe" class="love" title="View the source code on GitHub">
+        Made with 💖 by Samkit Jain
+    </a>
+
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
     <script src="app.js"></script>
 </body>

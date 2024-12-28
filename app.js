@@ -2,7 +2,9 @@
 const boxes = document.querySelectorAll(".box");
 const resetBtn = document.querySelector("#reset-btn");
 const startBtn = document.querySelector("#start-btn");
+const gameContainer = document.querySelector("#gameContainer");
 const msg = document.querySelector("#msg");
+const starter = document.querySelector("#initializer");
 
 // Game Variables
 let turnO = true;
@@ -41,6 +43,12 @@ const resetGame = () => {
     resetBtn.innerText = "Reset Game";
     count = 0;
 };
+
+const startGame = () => {
+    starter.classList.add("hide");
+    gameContainer.classList.remove("hide");
+    resetBtn.classList.remove("hide");
+}
 
 // Place Marker
 const placeMarker = (box, marker) => {
@@ -111,7 +119,7 @@ boxes.forEach((box) =>
         turnO = !turnO;
         box.disabled = true;
         count++;
-        if (count === 50) gameDraw();
+        if (count === 150) gameDraw();
         checkWinner();
     })
 );
@@ -140,3 +148,4 @@ const confettiAnimation = () => {
 
 // Reset Button Event
 resetBtn.addEventListener("click", resetGame);
+startBtn.addEventListener("click", startGame);

@@ -32,6 +32,15 @@
     background-color: #fff;
   }
 
+  .initializer{
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3vmin;
+  }
+
   .box {
     height: 18vmin;
     width: 18vmin;
@@ -44,7 +53,7 @@
     justify-content: center;
 }
   
-  #reset-btn {
+  #reset-btn,#start-btn,#mode-select {
     padding: 1rem 2rem;
     background-color: #191913;
   }
@@ -162,10 +171,6 @@
     text-decoration: none;
     color:#fff;
 }
-/* 
-.box:nth-child(1){
-    border-right: 10px solid white;
-} */
 
 .vanish{
   opacity: 25%;
