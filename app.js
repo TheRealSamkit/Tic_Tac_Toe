@@ -1,9 +1,12 @@
+import { appear, markAppear, buttonAni, winn } from "./animation.js";
+
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
 const resetBtn = document.querySelector("#reset-btn");
 const startBtn = document.querySelector("#start-btn");
 const gameContainer = document.querySelector("#gameContainer");
 const msg = document.querySelector("#msg");
+const turnID = document.querySelector("#turnID");
 const starter = document.querySelector("#initializer");
 
 // Game Variables
@@ -13,11 +16,11 @@ let count = 0;
 
 // Markers
 const O = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65" class="appear">
     <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
   </svg>`;
 const X = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65" class="appear">
     <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
     <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
   </svg>`;
@@ -29,11 +32,15 @@ const winPatterns = [
     [3, 4, 5], [6, 7, 8],
 ];
 
+
+buttonAni();
+
 // Reset Game
 const resetGame = () => {
     turnO = true;
     turns = [];
     msg.classList.add("hide");
+    turnID.classList.remove("hide");
     boxes.forEach((box) => {
         box.innerHTML = "";
         box.disabled = false;
@@ -44,10 +51,11 @@ const resetGame = () => {
     count = 0;
 };
 
-const startGame = () => {
+const initializer = () => {
     starter.classList.add("hide");
     gameContainer.classList.remove("hide");
     resetBtn.classList.remove("hide");
+    appear();
 }
 
 // Place Marker
@@ -55,6 +63,11 @@ const placeMarker = (box, marker) => {
     if (!box.innerHTML) {
         box.innerHTML = marker === "O" ? O : X;
         box.setAttribute("data-marker", marker);
+        markAppear();
+        const svg = box.querySelector("svg");
+        setTimeout(() => {
+            svg.classList.remove("appear");
+        }, 600);
     }
 };
 
@@ -65,8 +78,10 @@ const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 const showWinner = (winner) => {
     msg.innerText = `Congratulations, Winner is ${winner}`;
     msg.classList.remove("hide");
+    turnID.classList.add("hide");
     resetBtn.innerText = "New Game..?";
     confettiAnimation();
+    winn();
     disableBoxes();
 };
 
@@ -113,6 +128,7 @@ const turnRemover = () => {
 // Box Click Handler
 boxes.forEach((box) =>
     box.addEventListener("click", () => {
+        turnID.innerText = turnO ? "X's Turn" : "O's Turn";
         placeMarker(box, turnO ? "O" : "X");
         turns.unshift(box);
         turnRemover();
@@ -148,4 +164,4 @@ const confettiAnimation = () => {
 
 // Reset Button Event
 resetBtn.addEventListener("click", resetGame);
-startBtn.addEventListener("click", startGame);
+startBtn.addEventListener("click", initializer);

@@ -44,13 +44,16 @@
   .box {
     height: 18vmin;
     width: 18vmin;
-    /* border-radius: 1rem; */
     border: none;
     font-size: 8vmin;
     background-color: #0e2425;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.box:hover{
+  background-color: #191913;
 }
   
   #reset-btn,#start-btn,#mode-select {
@@ -140,7 +143,7 @@
     border: none;
   }
   
-  #msg {
+  .msg {
     color: #ffffc7;
     font-size: 1.8rem;
     margin:.5em
@@ -174,4 +177,5 @@
 
 .vanish{
   opacity: 25%;
+  transition: opacity .5s ease-out;
 }

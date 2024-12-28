@@ -17,9 +17,9 @@
         <div id="initializer" class="initializer" title="Game Initialization Section">
             <button id="start-btn" class="btn" title="Click to Start the Game">Start Game</button>
             <div id="mode-selection" class="hide initializer">
-                <button data-mode="pvp" class="btn" title="Player VS Player Mode" id="mode-select">Player VS
+                <button data-mode="pvp" class="btn ms" title="Player VS Player Mode" id="mode-select">Player VS
                     Player</button>
-                <button data-mode="pvc" class="btn" title="Player VS Computer Mode" id="mode-select">Player VS
+                <button data-mode="pvc" class="btn ms" title="Player VS Computer Mode" id="mode-select">Player VS
                     Computer</button>
             </div>
             <div id="difficulty-selection" class="hide">
@@ -29,6 +29,7 @@
         </div>
 
         <!-- Game Board Section -->
+        <p id="turnID" class="msg"></p>
         <div class="container hide" id="gameContainer" title="Game Board">
             <div class="game">
                 <button class="box" title="Game Box"></button>
@@ -44,7 +45,7 @@
         </div>
 
         <!-- Message and Reset -->
-        <p id="msg" class="hide" title="Game Status Message"></p>
+        <p id="msg" class="hide msg winn" title="Game Status Message"></p>
         <button id="reset-btn" class="btn hide" title="Click to Reset the Game">Reset Game</button>
     </main>
 
@@ -55,7 +56,8 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="app.js" type="module"></script>
 </body>
 
 </html>
