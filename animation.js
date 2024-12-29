@@ -1,4 +1,4 @@
-export { appear, markAppear, buttonAni, winn, rotate };
+export { appear, markAppear, buttonAni, winn, rotate, translateY, translateX };
 
 const appear = () => {
     anime({
@@ -14,7 +14,7 @@ const markAppear = () => {
     anime({
         targets: '.appear',
         rotate: 360,
-        scale: [3, 1],
+        scale: [-1, 1],
         filter: ['blur(5px)', 'blur(0px)'],
         easing: 'easeInOutSine',
         duration: 500,
@@ -24,9 +24,9 @@ const markAppear = () => {
 const buttonAni = () => {
     anime({
         targets: '.btn',
-        scale: [0.5, 1],
-        duration: 500,
-        easing: 'easeOutExpo'
+        scale: [0, 1],
+        duration: 1000,
+        easing: 'easeInOutSine'
     });
 }
 
@@ -42,6 +42,23 @@ const winn = () => {
 const rotate = (deg) => {
     anime({
         targets: '.stroke',
+        rotate: deg,
+    })
+}
+
+const translateY = (vmin, deg) => {
+    anime({
+        targets: '.stroke',
+        rotate: deg,
+        translateY: vmin,
+    })
+}
+
+const translateX = (vmin, deg) => {
+    anime({
+        targets: '.stroke',
+        translateX: vmin,
+        translateY: 0,
         rotate: deg,
     })
 }

@@ -1,4 +1,4 @@
-import { appear, markAppear, buttonAni, winn, rotate } from "./animation.js";
+import { appear, markAppear, buttonAni, winn, rotate, translateY, translateX } from "./animation.js";
 
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
@@ -9,11 +9,14 @@ const msg = document.querySelector("#msg");
 const turnID = document.querySelector("#turnID");
 const starter = document.querySelector("#initializer");
 const stroke = document.querySelector(".stroke");
+const scoreBd = document.querySelector(".score");
 
 // Game Variables
 let turnO = true;
 let turns = [];
 let count = 0;
+let play1 = 0;
+let play2 = 0;
 
 // Markers
 const O = `
@@ -33,13 +36,12 @@ const winPatterns = [
     [3, 4, 5], [6, 7, 8],
 ];
 
-
-buttonAni();
-
 // Reset Game
 const resetGame = () => {
     turnO = true;
     turns = [];
+    translateY("0vmin");
+    translateX("0vmin");
     addHide(msg);
     rmHide(turnID);
     addHide(stroke);
@@ -59,6 +61,7 @@ const initializer = () => {
     rmHide(gameContainer);
     rmHide(resetBtn);
     appear();
+    buttonAni();
 }
 
 const rmHide = (element) => {
@@ -88,6 +91,8 @@ const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
 // Show Winner
 const showWinner = (winner, [a, b, c]) => {
+    winner === "X" ? play2++ : play1++;
+    scoreBd.innerText = `O : ${play1} , X : ${play2}`;
     msg.innerText = `Congratulations, Winner is ${winner}`;
     rmHide(msg)
     addHide(turnID);
@@ -95,10 +100,15 @@ const showWinner = (winner, [a, b, c]) => {
     confettiAnimation();
     disableBoxes();
     winn();
-    console.log(b)
-    if (b == 4) {
-        rmHide(stroke);
-        a == 2 && c == 6 ? rotate("-45deg") : a == 0 && c == 8 ? rotate("45deg") : a == 1 && c == 7 ? rotate("90deg") : rotate("0deg");
+
+    rmHide(stroke);
+    if (b === 4) {
+        a === 2 && c === 6 ? rotate("-45deg") : a === 0 && c === 8 ? rotate("45deg") : a === 1 && c === 7 ? rotate("90deg") : rotate("0deg");
+    } else if (b === 1 || b === 7) {
+        a === 0 && c === 2 ? translateY("-20vmin", "0deg") : translateY("20vmin", "0deg");
+    } else {
+        console.log("in")
+        a === 0 && c === 6 ? translateX("-20vmin", "90deg") : translateX("20vmin", "90deg");
     }
 };
 
