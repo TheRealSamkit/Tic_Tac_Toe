@@ -1,12 +1,12 @@
-export { appear, markAppear, buttonAni, winn };
+export { appear, markAppear, buttonAni, winn, rotate };
 
 const appear = () => {
     anime({
-        targets: '.container',
-        scale: [0.8, 1],
+        targets: '.game',
+        scale: [0, 1],
         opacity: [0, 1],
         duration: 1000,
-        easing: 'easeOutExpo'
+        easing: 'easeInOutSine'
     });
 }
 
@@ -24,8 +24,8 @@ const markAppear = () => {
 const buttonAni = () => {
     anime({
         targets: '.btn',
-        scale: [0, 1],
-        duration: 800,
+        scale: [0.5, 1],
+        duration: 500,
         easing: 'easeOutExpo'
     });
 }
@@ -33,8 +33,15 @@ const buttonAni = () => {
 const winn = () => {
     anime({
         targets: '.winn',
-        translateY: ['270px', '0px'],
+        translateY: ['-270px', '0px'],
         duration: 800,
         easing: 'easeOutExpo'
     })
 };
+
+const rotate = (deg) => {
+    anime({
+        targets: '.stroke',
+        rotate: deg,
+    })
+}

@@ -1,4 +1,4 @@
-import { appear, markAppear, buttonAni, winn } from "./animation.js";
+import { appear, markAppear, buttonAni, winn, rotate } from "./animation.js";
 
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
@@ -8,6 +8,7 @@ const gameContainer = document.querySelector("#gameContainer");
 const msg = document.querySelector("#msg");
 const turnID = document.querySelector("#turnID");
 const starter = document.querySelector("#initializer");
+const stroke = document.querySelector(".stroke");
 
 // Game Variables
 let turnO = true;
@@ -39,24 +40,35 @@ buttonAni();
 const resetGame = () => {
     turnO = true;
     turns = [];
-    msg.classList.add("hide");
-    turnID.classList.remove("hide");
+    addHide(msg);
+    rmHide(turnID);
+    addHide(stroke);
     boxes.forEach((box) => {
         box.innerHTML = "";
         box.disabled = false;
         box.removeAttribute("data-marker");
         box.classList.remove("vanish");
     });
+    turnID.innerText = turnO ? "O's Turn" : "X's Turn";
     resetBtn.innerText = "Reset Game";
     count = 0;
 };
 
 const initializer = () => {
-    starter.classList.add("hide");
-    gameContainer.classList.remove("hide");
-    resetBtn.classList.remove("hide");
+    addHide(starter);
+    rmHide(gameContainer);
+    rmHide(resetBtn);
     appear();
 }
+
+const rmHide = (element) => {
+    element.classList.remove("hide");
+}
+
+const addHide = (element) => {
+    element.classList.add("hide");
+}
+
 
 // Place Marker
 const placeMarker = (box, marker) => {
@@ -75,14 +87,19 @@ const placeMarker = (box, marker) => {
 const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
 // Show Winner
-const showWinner = (winner) => {
+const showWinner = (winner, [a, b, c]) => {
     msg.innerText = `Congratulations, Winner is ${winner}`;
-    msg.classList.remove("hide");
-    turnID.classList.add("hide");
+    rmHide(msg)
+    addHide(turnID);
     resetBtn.innerText = "New Game..?";
     confettiAnimation();
-    winn();
     disableBoxes();
+    winn();
+    console.log(b)
+    if (b == 4) {
+        rmHide(stroke);
+        a == 2 && c == 6 ? rotate("-45deg") : a == 0 && c == 8 ? rotate("45deg") : a == 1 && c == 7 ? rotate("90deg") : rotate("0deg");
+    }
 };
 
 // Check for Winner
@@ -95,7 +112,7 @@ const checkWinner = () => {
             pos3.getAttribute("data-marker"),
         ];
         if (marker1 && marker1 === marker2 && marker2 === marker3) {
-            showWinner(marker1);
+            showWinner(marker1, [a, b, c]);
             return true;
         }
     }
@@ -105,18 +122,18 @@ const checkWinner = () => {
 // Handle Draw
 const gameDraw = () => {
     msg.innerText = `You have taken too much time game is Draw.`;
-    msg.classList.remove("hide");
+    rmHide(msg);
     disableBoxes();
 };
 
 // Remove Turns
 const turnRemover = () => {
-    if (turns.length > 4) {
-        const vanishBox = turns[4];
+    if (turns.length > 5) {
+        const vanishBox = turns[5];
         const svg = vanishBox?.querySelector("svg");
         svg?.classList.add("vanish");
     }
-    if (turns.length > 5) {
+    if (turns.length > 6) {
         const lastTurn = turns.pop();
         lastTurn.disabled = false;
         lastTurn.innerHTML = "";
