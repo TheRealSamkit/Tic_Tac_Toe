@@ -12,12 +12,21 @@
     display: flex;
     flex-direction: column;
   }
-  
+  /* Add to your CSS */
+.winning-line {
+  position: absolute;
+  width: 0;
+  height: 5px;
+  background-color: green;
+  transition: width 0.5s ease-out;
+}
+
   .container {
     height: 65vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   
   .game {

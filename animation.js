@@ -1,5 +1,5 @@
-export { appear, markAppear, buttonAni, winn, rotate, translateY, translateX };
-
+export { strokeAni, appear, markAppear, buttonAni, winn, rotate, translateY, translateX };
+let count = 0;
 const appear = () => {
     anime({
         targets: '.game',
@@ -46,19 +46,28 @@ const rotate = (deg) => {
     })
 }
 
-const translateY = (vmin, deg) => {
+const translateY = (vmin) => {
     anime({
         targets: '.stroke',
-        rotate: deg,
         translateY: vmin,
     })
 }
 
-const translateX = (vmin, deg) => {
+const translateX = (vmin) => {
+    console.log("into tranX")
     anime({
         targets: '.stroke',
         translateX: vmin,
-        translateY: 0,
+    })
+}
+
+const strokeAni = (deg = 0, X = "0vmin", Y = "0vmin") => {
+    count++;
+    console.log("Animation is called:", count, `\ndeg=${deg},X=${X},Y=${Y}`)
+    anime({
+        targets: '.stroke',
+        translateX: X,
+        translateY: Y,
         rotate: deg,
     })
 }

@@ -1,4 +1,4 @@
-import { appear, markAppear, buttonAni, winn, rotate, translateY, translateX } from "./animation.js";
+import { appear, markAppear, buttonAni, winn, strokeAni, rotate, translateY, translateX } from "./animation.js";
 
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
@@ -40,8 +40,6 @@ const winPatterns = [
 const resetGame = () => {
     turnO = true;
     turns = [];
-    translateY("0vmin");
-    translateX("0vmin");
     addHide(msg);
     rmHide(turnID);
     addHide(stroke);
@@ -103,13 +101,30 @@ const showWinner = (winner, [a, b, c]) => {
 
     rmHide(stroke);
     if (b === 4) {
-        a === 2 && c === 6 ? rotate("-45deg") : a === 0 && c === 8 ? rotate("45deg") : a === 1 && c === 7 ? rotate("90deg") : rotate("0deg");
+        if (a === 2 && c === 6) {
+            strokeAni("-45deg", "0vmin", "0vmin");
+        } else if (a === 0 && c === 8) {
+            strokeAni("45deg", "0vmin", "0vmin");
+        } else if (a === 1 && c === 7) {
+            strokeAni("90deg", "0vmin", "0vmin");
+        } else {
+            strokeAni("0deg", "0vmin", "0vmin");
+        }
     } else if (b === 1 || b === 7) {
-        a === 0 && c === 2 ? translateY("-20vmin", "0deg") : translateY("20vmin", "0deg");
+        if (a === 0 && c === 2) {
+            strokeAni("0deg", "0vmin", "-20vmin");
+        } else {
+            strokeAni("0deg", "0vmin", "20vmin");
+        }
     } else {
-        console.log("in")
-        a === 0 && c === 6 ? translateX("-20vmin", "90deg") : translateX("20vmin", "90deg");
+        console.log("in");
+        if (a === 0 && c === 6) {
+            strokeAni("90deg", "0vmin", "-20vmin");
+        } else {
+            strokeAni("90deg", "0vmin", "20vmin");
+        }
     }
+
 };
 
 // Check for Winner
