@@ -1,4 +1,4 @@
-export { strokeAni, appear, markAppear, buttonAni, winn, rotate, translateY, translateX };
+export { strokeAni, appear, markAppear, buttonAni, winn };
 let count = 0;
 const appear = () => {
     anime({
@@ -25,7 +25,7 @@ const buttonAni = () => {
     anime({
         targets: '.btn',
         scale: [0, 1],
-        duration: 1000,
+        duration: 500,
         easing: 'easeInOutSine'
     });
 }
@@ -38,28 +38,6 @@ const winn = () => {
         easing: 'easeOutExpo'
     })
 };
-
-const rotate = (deg) => {
-    anime({
-        targets: '.stroke',
-        rotate: deg,
-    })
-}
-
-const translateY = (vmin) => {
-    anime({
-        targets: '.stroke',
-        translateY: vmin,
-    })
-}
-
-const translateX = (vmin) => {
-    console.log("into tranX")
-    anime({
-        targets: '.stroke',
-        translateX: vmin,
-    })
-}
 
 const strokeAni = (deg = 0, X = "0vmin", Y = "0vmin") => {
     count++;

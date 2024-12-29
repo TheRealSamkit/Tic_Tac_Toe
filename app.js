@@ -1,4 +1,4 @@
-import { appear, markAppear, buttonAni, winn, strokeAni, rotate, translateY, translateX } from "./animation.js";
+import { appear, markAppear, buttonAni, winn, strokeAni } from "./animation.js";
 
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
@@ -10,6 +10,7 @@ const turnID = document.querySelector("#turnID");
 const starter = document.querySelector("#initializer");
 const stroke = document.querySelector(".stroke");
 const scoreBd = document.querySelector(".score");
+const modeSelect = document.querySelector("#mode-selection");
 
 // Game Variables
 let turnO = true;
@@ -17,6 +18,8 @@ let turns = [];
 let count = 0;
 let play1 = 0;
 let play2 = 0;
+let gameMode = "";
+let won = false;
 
 // Markers
 const O = `
@@ -38,7 +41,8 @@ const winPatterns = [
 
 // Reset Game
 const resetGame = () => {
-    turnO = true;
+    turnO = true; // Reset to "O" starting
+    won = false;
     turns = [];
     addHide(msg);
     rmHide(turnID);
@@ -52,15 +56,30 @@ const resetGame = () => {
     turnID.innerText = turnO ? "O's Turn" : "X's Turn";
     resetBtn.innerText = "Reset Game";
     count = 0;
+
+    // If the game mode is AI, set up the initial state for AI
+    if (gameMode === "AI") {
+        turnO = true; // AI's turn first if it's AI mode
+        aiTurn(); // Start with AI's turn
+    }
 };
 
 const initializer = () => {
+    addHide(startBtn);
+    rmHide(modeSelect);
+    buttonAni();
+}
+
+const modeSlt = (mode) => {
+    gameMode = mode;
+    console.log(gameMode); // Debug: Check mode
+    addHide(modeSelect);
     addHide(starter);
     rmHide(gameContainer);
     rmHide(resetBtn);
     appear();
-    buttonAni();
-}
+};
+
 
 const rmHide = (element) => {
     element.classList.remove("hide");
@@ -81,24 +100,35 @@ const placeMarker = (box, marker) => {
         setTimeout(() => {
             svg.classList.remove("appear");
         }, 600);
+        count++;
+        turns.unshift(box);
+        turnRemover();
+        checkWinner();
+        turnO = !turnO;// Toggle turn here
     }
 };
+
 
 // Disable All Boxes
 const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
 // Show Winner
-const showWinner = (winner, [a, b, c]) => {
+const showWinner = (winner) => {
     winner === "X" ? play2++ : play1++;
     scoreBd.innerText = `O : ${play1} , X : ${play2}`;
     msg.innerText = `Congratulations, Winner is ${winner}`;
-    rmHide(msg)
+    rmHide(msg);
     addHide(turnID);
     resetBtn.innerText = "New Game..?";
+    won = true;
     confettiAnimation();
     disableBoxes();
     winn();
+};
 
+//Stroke Editor
+
+const strokeEdi = ([a, b, c]) => {
     rmHide(stroke);
     if (b === 4) {
         if (a === 2 && c === 6) {
@@ -117,15 +147,13 @@ const showWinner = (winner, [a, b, c]) => {
             strokeAni("0deg", "0vmin", "20vmin");
         }
     } else {
-        console.log("in");
         if (a === 0 && c === 6) {
-            strokeAni("90deg", "0vmin", "-20vmin");
+            strokeAni("90deg", "-20vmin", "0vmin");
         } else {
-            strokeAni("90deg", "0vmin", "20vmin");
+            strokeAni("90deg", "20vmin", "0vmin");
         }
     }
-
-};
+}
 
 // Check for Winner
 const checkWinner = () => {
@@ -137,7 +165,8 @@ const checkWinner = () => {
             pos3.getAttribute("data-marker"),
         ];
         if (marker1 && marker1 === marker2 && marker2 === marker3) {
-            showWinner(marker1, [a, b, c]);
+            showWinner(marker1);
+            strokeEdi([a, b, c]);
             return true;
         }
     }
@@ -153,15 +182,19 @@ const gameDraw = () => {
 
 // Remove Turns
 const turnRemover = () => {
+    console.log("I was called")
+    // Check if there are turns to undo
     if (turns.length > 5) {
         const vanishBox = turns[5];
         const svg = vanishBox?.querySelector("svg");
         svg?.classList.add("vanish");
     }
+
+    // If there are more than 6 turns, remove the last one
     if (turns.length > 6) {
-        const lastTurn = turns.pop();
-        lastTurn.disabled = false;
-        lastTurn.innerHTML = "";
+        const lastTurn = turns.pop();  // Remove the last turn
+        lastTurn.disabled = false;  // Re-enable the box
+        lastTurn.innerHTML = "";  // Clear its content
         lastTurn.removeAttribute("data-marker");
         lastTurn.querySelector("svg")?.classList.remove("vanish");
     }
@@ -170,21 +203,28 @@ const turnRemover = () => {
 // Box Click Handler
 boxes.forEach((box) =>
     box.addEventListener("click", () => {
+        if (box.disabled) return;  // Prevent moves in already selected boxes
+
+        if (gameMode === "AI" && !turnO) return;  // If it's AI's turn, prevent player from clicking
+
+        // If the box is empty, place the marker
         turnID.innerText = turnO ? "X's Turn" : "O's Turn";
         placeMarker(box, turnO ? "O" : "X");
-        turns.unshift(box);
-        turnRemover();
-        turnO = !turnO;
         box.disabled = true;
         count++;
-        if (count === 150) gameDraw();
-        checkWinner();
+
+        if (count === 100) gameDraw();
+
+        // If it's AI's turn, trigger AI move
+        if ((gameMode === "AI" && !turnO) && !won) {
+            setTimeout(aiTurn(), 1000);  // Delay AI move slightly
+        }
     })
 );
 
 // Confetti Animation
 const confettiAnimation = () => {
-    const duration = 5000; // 5 seconds
+    const duration = 3000; // 5 seconds
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -207,3 +247,41 @@ const confettiAnimation = () => {
 // Reset Button Event
 resetBtn.addEventListener("click", resetGame);
 startBtn.addEventListener("click", initializer);
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modeSelection = document.querySelectorAll('.ms'); // Adjust your selector
+    modeSelection.forEach((button) => button.addEventListener("click", (event) => modeSlt(event.target.dataset.mode)));
+});
+
+const aiTurn = () => {
+    if (turnO || won) return;  // If it's the player's turn, return early
+
+    const emptyBoxes = Array.from(boxes).filter(box => !box.innerHTML);  // Get empty boxes
+
+    // Try to win or block
+    let chosenBox = emptyBoxes.find(box => canWin(box, "X"));  // Try to win
+    if (!chosenBox) chosenBox = emptyBoxes.find(box => canWin(box, "O"));  // Block the player
+
+    // If no winning or blocking move, choose a random box
+    if (!chosenBox) {
+        chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+    }
+
+    placeMarker(chosenBox, "X");  // AI places the marker
+    count++;  // Increase move count
+};
+
+// Check if Box Can Win
+const canWin = (box, marker) => {
+    box.setAttribute("data-marker", marker);
+    const isWinning = winPatterns.some(([a, b, c]) => {
+        const [m1, m2, m3] = [
+            boxes[a].getAttribute("data-marker"),
+            boxes[b].getAttribute("data-marker"),
+            boxes[c].getAttribute("data-marker"),
+        ];
+        return m1 === marker && m2 === marker && m3 === marker;
+    });
+    box.removeAttribute("data-marker");
+    return isWinning;
+};
