@@ -1,5 +1,5 @@
 import { appear, markAppear, buttonAni, winn, strokeAni } from "./animation.js";
-
+import { audioList } from "./sfx.js"
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
 const resetBtn = document.querySelector("#reset-btn");
@@ -20,6 +20,7 @@ let play1 = 0;
 let play2 = 0;
 let gameMode = "";
 let won = false;
+let { mark, click, swoosh } = audioList;
 
 // Markers
 const O = `
@@ -41,9 +42,10 @@ const winPatterns = [
 
 // Reset Game
 const resetGame = () => {
-    turnO = true; // Reset to "O" starting
+    turnO = true;
     won = false;
     turns = [];
+    swoosh.play();
     addHide(msg);
     rmHide(turnID);
     addHide(stroke);
@@ -57,43 +59,46 @@ const resetGame = () => {
     resetBtn.innerText = "Reset Game";
     count = 0;
 
-    // If the game mode is AI, set up the initial state for AI
     if (gameMode === "AI") {
-        turnO = true; // AI's turn first if it's AI mode
-        aiTurn(); // Start with AI's turn
+        turnO = true;
+        aiTurn();
     }
 };
 
 const initializer = () => {
     addHide(startBtn);
     rmHide(modeSelect);
+    swoosh.play();
     buttonAni();
-}
+};
 
 const modeSlt = (mode) => {
     gameMode = mode;
-    console.log(gameMode); // Debug: Check mode
     addHide(modeSelect);
     addHide(starter);
     rmHide(gameContainer);
     rmHide(resetBtn);
+    swoosh.play();
     appear();
 };
 
-
 const rmHide = (element) => {
     element.classList.remove("hide");
-}
+};
 
 const addHide = (element) => {
     element.classList.add("hide");
-}
+};
 
-
-// Place Marker
 const placeMarker = (box, marker) => {
     if (!box.innerHTML) {
-        box.innerHTML = marker === "O" ? O : X;
+        if (marker === "O") {
+            box.innerHTML = O;
+            mark.play();
+        } else {
+            box.innerHTML = X;
+            click.play();
+        }
         box.setAttribute("data-marker", marker);
         markAppear();
         const svg = box.querySelector("svg");
@@ -104,15 +109,12 @@ const placeMarker = (box, marker) => {
         turns.unshift(box);
         turnRemover();
         checkWinner();
-        turnO = !turnO;// Toggle turn here
+        turnO = !turnO;
     }
 };
 
-
-// Disable All Boxes
 const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
-// Show Winner
 const showWinner = (winner) => {
     winner === "X" ? play2++ : play1++;
     scoreBd.innerText = `O : ${play1} , X : ${play2}`;
@@ -125,8 +127,6 @@ const showWinner = (winner) => {
     disableBoxes();
     winn();
 };
-
-//Stroke Editor
 
 const strokeEdi = ([a, b, c]) => {
     rmHide(stroke);
@@ -153,9 +153,8 @@ const strokeEdi = ([a, b, c]) => {
             strokeAni("90deg", "20vmin", "0vmin");
         }
     }
-}
+};
 
-// Check for Winner
 const checkWinner = () => {
     for (let [a, b, c] of winPatterns) {
         const [pos1, pos2, pos3] = [boxes[a], boxes[b], boxes[c]];
@@ -173,58 +172,44 @@ const checkWinner = () => {
     return false;
 };
 
-// Handle Draw
 const gameDraw = () => {
     msg.innerText = `You have taken too much time game is Draw.`;
     rmHide(msg);
     disableBoxes();
 };
 
-// Remove Turns
 const turnRemover = () => {
-    console.log("I was called")
-    // Check if there are turns to undo
     if (turns.length > 5) {
         const vanishBox = turns[5];
         const svg = vanishBox?.querySelector("svg");
         svg?.classList.add("vanish");
     }
 
-    // If there are more than 6 turns, remove the last one
     if (turns.length > 6) {
-        const lastTurn = turns.pop();  // Remove the last turn
-        lastTurn.disabled = false;  // Re-enable the box
-        lastTurn.innerHTML = "";  // Clear its content
+        const lastTurn = turns.pop();
+        lastTurn.disabled = false;
+        lastTurn.innerHTML = "";
         lastTurn.removeAttribute("data-marker");
         lastTurn.querySelector("svg")?.classList.remove("vanish");
     }
 };
 
-// Box Click Handler
 boxes.forEach((box) =>
     box.addEventListener("click", () => {
-        if (box.disabled) return;  // Prevent moves in already selected boxes
-
-        if (gameMode === "AI" && !turnO) return;  // If it's AI's turn, prevent player from clicking
-
-        // If the box is empty, place the marker
+        if (box.disabled || (gameMode === "AI" && !turnO)) return;
         turnID.innerText = turnO ? "X's Turn" : "O's Turn";
         placeMarker(box, turnO ? "O" : "X");
         box.disabled = true;
         count++;
-
         if (count === 100) gameDraw();
-
-        // If it's AI's turn, trigger AI move
-        if ((gameMode === "AI" && !turnO) && !won) {
-            setTimeout(aiTurn(), 1000);  // Delay AI move slightly
+        if (gameMode === "AI" && !turnO && !won) {
+            setTimeout(aiTurn(), 1000);
         }
     })
 );
 
-// Confetti Animation
 const confettiAnimation = () => {
-    const duration = 3000; // 5 seconds
+    const duration = 3000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -244,34 +229,31 @@ const confettiAnimation = () => {
     }, 250);
 };
 
-// Reset Button Event
 resetBtn.addEventListener("click", resetGame);
 startBtn.addEventListener("click", initializer);
 
 document.addEventListener("DOMContentLoaded", () => {
-    const modeSelection = document.querySelectorAll('.ms'); // Adjust your selector
+    const modeSelection = document.querySelectorAll('.ms');
     modeSelection.forEach((button) => button.addEventListener("click", (event) => modeSlt(event.target.dataset.mode)));
 });
 
 const aiTurn = () => {
-    if (turnO || won) return;  // If it's the player's turn, return early
+    if (turnO || won) return;
 
-    const emptyBoxes = Array.from(boxes).filter(box => !box.innerHTML);  // Get empty boxes
-
-    // Try to win or block
-    let chosenBox = emptyBoxes.find(box => canWin(box, "X"));  // Try to win
-    if (!chosenBox) chosenBox = emptyBoxes.find(box => canWin(box, "O"));  // Block the player
-
-    // If no winning or blocking move, choose a random box
+    const emptyBoxes = Array.from(boxes).filter(box => !box.innerHTML);
+    let chosenBox = emptyBoxes.find(box => canWin(box, "X")) || emptyBoxes.find(box => canWin(box, "O"));
     if (!chosenBox) {
         chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
     }
+    setTimeout(placeMarker(chosenBox, "X"), 2000);
 
-    placeMarker(chosenBox, "X");  // AI places the marker
-    count++;  // Increase move count
+    if (!won) {
+        turnO = true;
+        turnID.innerText = "O's Turn";
+    }
+    count++;
 };
 
-// Check if Box Can Win
 const canWin = (box, marker) => {
     box.setAttribute("data-marker", marker);
     const isWinning = winPatterns.some(([a, b, c]) => {

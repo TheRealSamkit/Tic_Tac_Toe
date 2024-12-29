@@ -26,7 +26,6 @@ const buttonAni = () => {
         targets: '.btn',
         scale: [0, 1],
         duration: 500,
-        easing: 'easeInOutSine'
     });
 }
 
