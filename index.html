@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe Game</title>
+    <meta name="description"
+        content="Play the classic Tic-Tac-Toe game online. Challenge your friends or compete with AI in this fun and interactive game.">
+    <meta name="keywords" content="Tic Tac Toe, Online Game, Play Tic Tac Toe, Multiplayer Game, AI Tic Tac Toe">
+    <meta name="author" content="Samkit Jain">
+    <title>Tic Tac Toe Game - Play Online</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Unkempt:wght@400;700&display=swap" rel="stylesheet">
@@ -12,45 +16,44 @@
 
 <body>
     <main>
-        <h1 class="title" title="Game Title">Tic Tac Toe</h1>
+        <h1 class="title" title="Tic Tac Toe Game">Tic Tac Toe</h1>
         <!-- Game Initialization Section -->
-        <div id="initializer" class="initializer" title="Game Initialization Section">
+        <div id="initializer" class="initializer" title="Game Initialization">
             <button id="start-btn" class="btn" title="Click to Start the Game">Start Game</button>
             <div id="mode-selection" class="hide initializer">
-                <button data-mode="pvp" class="btn ms" title="Player VS Player Mode" id="mode-select">Player VS
+                <button data-mode="pvp" class="btn ms" title="Select Player VS Player Mode" id="mode-select">Player VS
                     Player</button>
-                <button data-mode="AI" class="btn ms" title="Player VS Computer Mode" id="mode-select">Player VS
+                <button data-mode="AI" class="btn ms" title="Select Player VS Computer Mode" id="mode-select">Player VS
                     Computer</button>
             </div>
         </div>
 
         <!-- Game Board Section -->
-        <p id="turnID" class="msg"></p>
-        <p class="score"></p>
-        <div class="container hide" id="gameContainer" title="Game Board">
+        <p id="turnID" class="msg" title="Current Turn Status"></p>
+        <p class="score" title="Game Score"></p>
+        <div class="container hide" id="gameContainer" title="Tic Tac Toe Game Board">
             <div class="game">
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <button class="box" title="Game Box"></button>
-                <hr class="stroke hide">
+                <button class="box" title="Game Box - Position 1"></button>
+                <button class="box" title="Game Box - Position 2"></button>
+                <button class="box" title="Game Box - Position 3"></button>
+                <button class="box" title="Game Box - Position 4"></button>
+                <button class="box" title="Game Box - Position 5"></button>
+                <button class="box" title="Game Box - Position 6"></button>
+                <button class="box" title="Game Box - Position 7"></button>
+                <button class="box" title="Game Box - Position 8"></button>
+                <button class="box" title="Game Box - Position 9"></button>
+                <hr class="stroke hide" title="Winning Line">
             </div>
         </div>
 
         <!-- Message and Reset -->
-        <p id="msg" class="hide msg winn" title="Game Status Message"></p>
+        <p id="msg" class="hide msg winn" title="Game Status Message">Game Over!</p>
         <button id="reset-btn" class="btn hide" title="Click to Reset the Game">Reset Game</button>
     </main>
 
-    <a href="https://github.com/TheRealSamkit/Tic_Tac_Toe" class="love" title="View the source code on GitHub">
+    <a href="https://github.com/TheRealSamkit/Tic_Tac_Toe" class="love" title="Visit GitHub Repository for Tic Tac Toe">
         Made with 💖 by Samkit Jain
     </a>
-
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>

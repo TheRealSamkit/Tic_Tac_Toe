@@ -1,5 +1,5 @@
 export { strokeAni, appear, markAppear, buttonAni, winn };
-let count = 0;
+
 const appear = () => {
     anime({
         targets: '.game',
@@ -39,8 +39,6 @@ const winn = () => {
 };
 
 const strokeAni = (deg = 0, X = "0vmin", Y = "0vmin") => {
-    count++;
-    console.log("Animation is called:", count, `\ndeg=${deg},X=${X},Y=${Y}`)
     anime({
         targets: '.stroke',
         translateX: X,

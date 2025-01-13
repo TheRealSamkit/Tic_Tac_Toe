@@ -21,7 +21,8 @@ let play2 = 0;
 let gameMode = "";
 let won = false;
 let { mark, click, swoosh } = audioList;
-
+mark.volume = 0.5;
+swoosh.volume = 0.2;
 // Markers
 const O = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65" class="appear">
