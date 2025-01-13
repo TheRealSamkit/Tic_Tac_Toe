@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modeSelection.forEach((button) => button.addEventListener("click", (event) => modeSlt(event.target.dataset.mode)));
 });
 
-const aiTurn = () => {
+const aiTurn = async () => {
     if (turnO || won) return;
 
     const emptyBoxes = Array.from(boxes).filter(box => !box.innerHTML);
@@ -245,7 +245,10 @@ const aiTurn = () => {
     if (!chosenBox) {
         chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
     }
-    setTimeout(placeMarker(chosenBox, "X"), 2000);
+    await new Promise(resolve => setTimeout(() => {
+        placeMarker(chosenBox, "X");
+        resolve();
+    }, 1000));
 
     if (!won) {
         turnO = true;
