@@ -1,4 +1,7 @@
 ---
+title: "Tic-Tac-Toe Game"
+layout: default
+---
 
 # Tic-Tac-Toe Game ✌️🔲
 
@@ -45,5 +48,3 @@ Built with love by **Samkit Jain**! 🤘
 Enjoy the game! 😎
 
 > *"May the best player win."* 🏅
-
----
