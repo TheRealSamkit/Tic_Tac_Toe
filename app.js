@@ -25,11 +25,11 @@ mark.volume = 0.5;
 swoosh.volume = 0.2;
 // Markers
 const O = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65" class="appear">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15vmin" height="15vmin" class="appear">
     <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
   </svg>`;
 const X = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="65" height="65" class="appear">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15vmin" height="15vmin" class="appear">
     <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
     <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
   </svg>`;
@@ -246,10 +246,12 @@ const aiTurn = async () => {
     if (!chosenBox) {
         chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
     }
-    await new Promise(resolve => setTimeout(() => {
-        placeMarker(chosenBox, "X");
-        resolve();
-    }, 1000));
+    await new Promise(resolve => {
+        setTimeout(() => {
+            placeMarker(chosenBox, "X");
+            resolve();
+        }, 900);
+    });
 
     if (!won) {
         turnO = true;
