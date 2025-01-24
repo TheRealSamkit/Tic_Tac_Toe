@@ -1,65 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Play the classic Tic-Tac-Toe game online. Challenge your friends or compete with AI in this fun and interactive game.">
-    <meta name="keywords" content="Tic Tac Toe, Online Game, Play Tic Tac Toe, Multiplayer Game, AI Tic Tac Toe">
-    <meta name="author" content="Samkit Jain">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Play the classic Tic-Tac-Toe game online. Challenge your friends or compete with AI in this fun and interactive game."
+    />
+    <meta
+      name="keywords"
+      content="Tic Tac Toe, Online Game, Play Tic Tac Toe, Multiplayer Game, AI Tic Tac Toe"
+    />
+    <meta name="author" content="Samkit Jain" />
     <title>Tic Tac Toe Game - Play Online</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Unkempt:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="assets/favicon.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Unkempt:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Made by samkit jain -->
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <h1 class="title" title="Tic Tac Toe Game">Tic Tac Toe</h1>
-        <!-- Game Initialization Section -->
-        <div id="initializer" class="initializer" title="Game Initialization">
-            <button id="start-btn" class="btn" title="Click to Start the Game">Start Game</button>
-            <div id="mode-selection" class="hide initializer">
-                <button data-mode="pvp" class="btn ms" title="Select Player VS Player Mode" id="mode-select">Player VS
-                    Player</button>
-                <button data-mode="AI" class="btn ms" title="Select Player VS Computer Mode" id="mode-select">Player VS
-                    Computer</button>
-            </div>
+      <h1 class="title" title="Tic Tac Toe Game">
+        Tic Tac Toe<svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          fill="#e8eaed"
+          class="gear"
+        >
+          <path
+            d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"
+          />
+        </svg>
+      </h1>
+      <div class="settings">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="soundBtn"
+          viewBox="0 -960 960 960"
+          fill="#e8eaed"
+          id="stopSounds"
+        >
+          <path
+            d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z"
+          />
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="musicBtn"
+          viewBox="0 -960 960 960"
+          fill="#e8eaed"
+          id="music"
+        >
+          <path
+            d="M400-120q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47Z"
+          />
+        </svg>
+      </div>
+      <!-- Game Initialization Section -->
+      <div id="initializer" class="initializer" title="Game Initialization">
+        <button id="start-btn" class="btn" title="Click to Start the Game">
+          Start Game
+        </button>
+        <div id="mode-selection" class="hide initializer">
+          <button
+            data-mode="pvp"
+            class="btn ms"
+            title="Select Player VS Player Mode"
+            id="mode-select"
+          >
+            Player VS Player
+          </button>
+          <button
+            data-mode="AI"
+            class="btn ms"
+            title="Select Player VS Computer Mode"
+            id="mode-select"
+          >
+            Player VS Computer
+          </button>
         </div>
+      </div>
 
-        <!-- Game Board Section -->
-        <p id="turnID" class="msg" title="Current Turn Status"></p>
-        <p class="score" title="Game Score"></p>
-        <div class="container hide" id="gameContainer" title="Tic Tac Toe Game Board">
-            <div class="game">
-                <button class="box" title="Game Box - Position 1"></button>
-                <button class="box" title="Game Box - Position 2"></button>
-                <button class="box" title="Game Box - Position 3"></button>
-                <button class="box" title="Game Box - Position 4"></button>
-                <button class="box" title="Game Box - Position 5"></button>
-                <button class="box" title="Game Box - Position 6"></button>
-                <button class="box" title="Game Box - Position 7"></button>
-                <button class="box" title="Game Box - Position 8"></button>
-                <button class="box" title="Game Box - Position 9"></button>
-                <hr class="stroke hide" title="Winning Line">
-            </div>
+      <!-- Game Board Section -->
+      <p id="turnID" class="msg" title="Current Turn Status"></p>
+      <p class="score" title="Game Score"></p>
+      <div
+        class="container hide"
+        id="gameContainer"
+        title="Tic Tac Toe Game Board"
+      >
+        <div class="game">
+          <button class="box" title="Game Box - Position 1"></button>
+          <button class="box" title="Game Box - Position 2"></button>
+          <button class="box" title="Game Box - Position 3"></button>
+          <button class="box" title="Game Box - Position 4"></button>
+          <button class="box" title="Game Box - Position 5"></button>
+          <button class="box" title="Game Box - Position 6"></button>
+          <button class="box" title="Game Box - Position 7"></button>
+          <button class="box" title="Game Box - Position 8"></button>
+          <button class="box" title="Game Box - Position 9"></button>
+          <hr class="stroke hide" title="Winning Line" />
         </div>
+      </div>
 
-        <!-- Message and Reset -->
-        <p id="msg" class="hide msg winn" title="Game Status Message">Game Over!</p>
-        <button id="reset-btn" class="btn hide" title="Click to Reset the Game">Reset Game</button>
+      <!-- Message and Reset -->
+      <p id="msg" class="hide msg winn" title="Game Status Message">
+        Game Over!
+      </p>
+      <button id="reset-btn" class="btn hide" title="Click to Reset the Game">
+        Reset Game
+      </button>
     </main>
 
-    <a href="https://github.com/TheRealSamkit/Tic_Tac_Toe" class="love" title="Visit GitHub Repository for Tic Tac Toe">
-        Made by &copy; Samkit Jain
+    <a
+      href="https://github.com/TheRealSamkit/Tic_Tac_Toe"
+      class="love"
+      title="Visit GitHub Repository for Tic Tac Toe"
+    >
+      Made by &copy; Samkit Jain
     </a>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
     <script src="app.js" type="module"></script>
-</body>
-
+  </body>
 </html>
