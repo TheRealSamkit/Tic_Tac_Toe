@@ -1,8 +1,3 @@
----
-title: "Tic-Tac-Toe Game"
-layout: default
----
-
 # Tic-Tac-Toe Game ✌️🔲
 
 Welcome to the **ultimate** Tic-Tac-Toe experience! 🕹️
