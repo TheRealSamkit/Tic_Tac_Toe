@@ -22,6 +22,7 @@ const setGear = document.querySelector(".gear");
 const setCon = document.querySelector(".settings");
 const musicBtn = document.getElementById("music");
 const soundBtn = document.getElementById("stopSounds");
+const refresh = document.querySelector(".refresh");
 
 // Game Variables
 let turnO = true,
@@ -374,6 +375,7 @@ startBtn.addEventListener("click", initializer);
 musicBtn.addEventListener("click", toggleMusic);
 soundBtn.addEventListener("click", toggleSounds);
 setGear.addEventListener("click", () => toggleSettings());
+refresh.addEventListener("click", () => location.reload());
 document.addEventListener("visibilitychange", function () {
 	document.hidden ? bg.pause() : bg.play();
 });
