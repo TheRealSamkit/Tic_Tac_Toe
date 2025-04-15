@@ -1,10 +1,10 @@
 import {
-  appear,
-  markAppear,
-  buttonAni,
-  winn,
-  strokeAni,
-  setttingAni,
+	appear,
+	markAppear,
+	buttonAni,
+	winn,
+	strokeAni,
+	setttingAni,
 } from "./animation.js";
 import { audioList } from "./sfx.js";
 // DOM Elements
@@ -25,15 +25,15 @@ const soundBtn = document.getElementById("stopSounds");
 
 // Game Variables
 let turnO = true,
-  turns = [],
-  count = 0,
-  play1 = 0,
-  play2 = 0,
-  gameMode = "",
-  won = false,
-  sound = false,
-  music = false,
-  setShow = true;
+	turns = [],
+	count = 0,
+	play1 = 0,
+	play2 = 0,
+	gameMode = "",
+	won = false,
+	sound = false,
+	music = false,
+	setShow = true;
 const { mark, click, swoosh, click1, bg } = audioList;
 
 // Markers
@@ -61,308 +61,312 @@ const disaMusic = `<path
 
 // Winning Patterns
 const winPatterns = [
-  [0, 1, 2],
-  [0, 3, 6],
-  [0, 4, 8],
-  [1, 4, 7],
-  [2, 5, 8],
-  [2, 4, 6],
-  [3, 4, 5],
-  [6, 7, 8],
+	[0, 1, 2],
+	[0, 3, 6],
+	[0, 4, 8],
+	[1, 4, 7],
+	[2, 5, 8],
+	[2, 4, 6],
+	[3, 4, 5],
+	[6, 7, 8],
 ];
 
 // Reset Game
 const resetGame = () => {
-  turnO = true;
-  won = false;
-  turns = [];
-  playSound(click1, 0.153);
-  swoosh.play();
-  addHide(msg);
-  rmHide(turnID);
-  addHide(stroke);
-  boxes.forEach((box) => {
-    box.innerHTML = "";
-    box.disabled = false;
-    box.removeAttribute("data-marker");
-    box.classList.remove("vanish");
-  });
-  turnID.innerText = turnO ? "O's Turn" : "X's Turn";
-  resetBtn.innerText = "Reset Game";
-  count = 0;
+	turnO = true;
+	won = false;
+	turns = [];
+	playSound(click1, 0.153);
+	swoosh.play();
+	addHide(msg);
+	rmHide(turnID);
+	addHide(stroke);
+	boxes.forEach((box) => {
+		box.innerHTML = "";
+		box.disabled = false;
+		box.removeAttribute("data-marker");
+		box.classList.remove("vanish");
+	});
+	turnID.innerText = turnO ? "O's Turn" : "X's Turn";
+	resetBtn.innerText = "Reset Game";
+	count = 0;
 
-  if (gameMode === "AI") {
-    turnO = true;
-    aiTurn();
-  }
+	if (gameMode === "AI") {
+		turnO = true;
+		aiTurn();
+	}
 };
 
 const initializer = () => {
-  addHide(startBtn);
-  rmHide(modeSelect);
-  setupSounds();
-  swoosh.play();
-  buttonAni();
-  bg.play();
-  playSound(click1, 0.153);
+	addHide(startBtn);
+	rmHide(modeSelect);
+	setupSounds();
+	swoosh.play();
+	buttonAni();
+	bg.play();
+	playSound(click1, 0.153);
 };
 
 function setupSounds() {
-  bg.volume = 0.02;
-  bg.loop = true;
-  click1.volume = 0.7;
-  music = sound = true;
-  click.volume = 0.5;
-  mark.volume = 0.4;
-  swoosh.volume = 0.1;
+	bg.volume = 0.02;
+	bg.loop = true;
+	click1.volume = 0.7;
+	music = sound = true;
+	click.volume = 0.5;
+	mark.volume = 0.4;
+	swoosh.volume = 0.1;
 }
 
 const modeSlt = (mode) => {
-  gameMode = mode;
-  addHide(modeSelect);
-  addHide(starter);
-  rmHide(gameContainer);
-  rmHide(resetBtn);
-  swoosh.play();
-  appear();
-  playSound(click1, 0.153);
+	gameMode = mode;
+	addHide(modeSelect);
+	addHide(starter);
+	rmHide(gameContainer);
+	rmHide(resetBtn);
+	swoosh.play();
+	appear();
+	playSound(click1, 0.153);
 };
 
 const rmHide = (element) => {
-  element.classList.remove("hide");
+	element.classList.remove("hide");
 };
 
 const addHide = (element) => {
-  element.classList.add("hide");
+	element.classList.add("hide");
 };
 
 const placeMarker = (box, marker) => {
-  if (!box.innerHTML) {
-    if (marker === "O") {
-      box.innerHTML = O;
-      mark.play();
-    } else {
-      box.innerHTML = X;
-      click.play();
-    }
-    box.setAttribute("data-marker", marker);
-    markAppear();
-    const svg = box.querySelector("svg");
-    setTimeout(() => {
-      svg.classList.remove("appear");
-    }, 600);
-    count++;
-    turns.unshift(box);
-    turnRemover();
-    checkWinner();
-    turnO = !turnO;
-  }
+	if (!box.innerHTML) {
+		if (marker === "O") {
+			box.innerHTML = O;
+			mark.play();
+		} else {
+			box.innerHTML = X;
+			click.play();
+		}
+		box.setAttribute("data-marker", marker);
+		markAppear();
+		const svg = box.querySelector("svg");
+		setTimeout(() => {
+			svg.classList.remove("appear");
+		}, 600);
+		count++;
+		turns.unshift(box);
+		turnRemover();
+		checkWinner();
+		turnO = !turnO;
+	}
 };
 
 const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
 const showWinner = (winner) => {
-  winner === "X" ? play2++ : play1++;
-  scoreBd.innerText = `O : ${play1} , X : ${play2}`;
-  msg.innerText = `Congratulations, Winner is ${winner}`;
-  rmHide(msg);
-  addHide(turnID);
-  resetBtn.innerText = "New Game..?";
-  won = true;
-  confettiAnimation();
-  disableBoxes();
-  winn();
+	winner === "X" ? play2++ : play1++;
+	scoreBd.innerText = `O : ${play1} , X : ${play2}`;
+	msg.innerText = `Congratulations, Winner is ${winner}`;
+	rmHide(msg);
+	addHide(turnID);
+	resetBtn.innerText = "New Game..?";
+	won = true;
+	disableBoxes();
+	winn();
+	if (winner === "X" && gameMode === "AI") {
+		return;
+	} else {
+		confettiAnimation();
+	}
 };
 
 const strokeEdi = ([a, b, c]) => {
-  rmHide(stroke);
-  if (b === 4) {
-    if (a === 2 && c === 6) {
-      strokeAni("-45deg", "0vmin", "0vmin");
-    } else if (a === 0 && c === 8) {
-      strokeAni("45deg", "0vmin", "0vmin");
-    } else if (a === 1 && c === 7) {
-      strokeAni("90deg", "0vmin", "0vmin");
-    } else {
-      strokeAni("0deg", "0vmin", "0vmin");
-    }
-  } else if (b === 1 || b === 7) {
-    if (a === 0 && c === 2) {
-      strokeAni("0deg", "0vmin", "-20vmin");
-    } else {
-      strokeAni("0deg", "0vmin", "20vmin");
-    }
-  } else {
-    if (a === 0 && c === 6) {
-      strokeAni("90deg", "-20vmin", "0vmin");
-    } else {
-      strokeAni("90deg", "20vmin", "0vmin");
-    }
-  }
+	rmHide(stroke);
+	if (b === 4) {
+		if (a === 2 && c === 6) {
+			strokeAni("-45deg", "0vmin", "0vmin");
+		} else if (a === 0 && c === 8) {
+			strokeAni("45deg", "0vmin", "0vmin");
+		} else if (a === 1 && c === 7) {
+			strokeAni("90deg", "0vmin", "0vmin");
+		} else {
+			strokeAni("0deg", "0vmin", "0vmin");
+		}
+	} else if (b === 1 || b === 7) {
+		if (a === 0 && c === 2) {
+			strokeAni("0deg", "0vmin", "-20vmin");
+		} else {
+			strokeAni("0deg", "0vmin", "20vmin");
+		}
+	} else {
+		if (a === 0 && c === 6) {
+			strokeAni("90deg", "-20vmin", "0vmin");
+		} else {
+			strokeAni("90deg", "20vmin", "0vmin");
+		}
+	}
 };
 
 const checkWinner = () => {
-  for (let [a, b, c] of winPatterns) {
-    const [pos1, pos2, pos3] = [boxes[a], boxes[b], boxes[c]];
-    const [marker1, marker2, marker3] = [
-      pos1.getAttribute("data-marker"),
-      pos2.getAttribute("data-marker"),
-      pos3.getAttribute("data-marker"),
-    ];
-    if (marker1 && marker1 === marker2 && marker2 === marker3) {
-      showWinner(marker1);
-      strokeEdi([a, b, c]);
-      return true;
-    }
-  }
-  return false;
+	for (let [a, b, c] of winPatterns) {
+		const [pos1, pos2, pos3] = [boxes[a], boxes[b], boxes[c]];
+		const [marker1, marker2, marker3] = [
+			pos1.getAttribute("data-marker"),
+			pos2.getAttribute("data-marker"),
+			pos3.getAttribute("data-marker"),
+		];
+		if (marker1 && marker1 === marker2 && marker2 === marker3) {
+			showWinner(marker1);
+			strokeEdi([a, b, c]);
+			return true;
+		}
+	}
+	return false;
 };
 
 const gameDraw = () => {
-  msg.innerText = `You have taken too much time game is Draw.`;
-  rmHide(msg);
-  disableBoxes();
+	msg.innerText = `You have taken too much time game is Draw.`;
+	rmHide(msg);
+	disableBoxes();
 };
 
 const turnRemover = () => {
-  if (turns.length > 5) {
-    const vanishBox = turns[5];
-    const svg = vanishBox?.querySelector("svg");
-    svg?.classList.add("vanish");
-  }
+	if (turns.length > 5) {
+		const vanishBox = turns[5];
+		const svg = vanishBox?.querySelector("svg");
+		svg?.classList.add("vanish");
+	}
 
-  if (turns.length > 6) {
-    const lastTurn = turns.pop();
-    lastTurn.disabled = false;
-    lastTurn.innerHTML = "";
-    lastTurn.removeAttribute("data-marker");
-    lastTurn.querySelector("svg")?.classList.remove("vanish");
-  }
+	if (turns.length > 6) {
+		const lastTurn = turns.pop();
+		lastTurn.disabled = false;
+		lastTurn.innerHTML = "";
+		lastTurn.removeAttribute("data-marker");
+		lastTurn.querySelector("svg")?.classList.remove("vanish");
+	}
 };
 
 boxes.forEach((box) =>
-  box.addEventListener("click", () => {
-    if (box.disabled || (gameMode === "AI" && !turnO)) return;
-    turnID.innerText = turnO ? "X's Turn" : "O's Turn";
-    placeMarker(box, turnO ? "O" : "X");
-    box.disabled = true;
-    count++;
-    if (count === 100) gameDraw();
-    if (gameMode === "AI" && !turnO && !won) {
-      setTimeout(aiTurn(), 1000);
-    }
-  })
+	box.addEventListener("click", () => {
+		if (box.disabled || (gameMode === "AI" && !turnO)) return;
+		turnID.innerText = turnO ? "X's Turn" : "O's Turn";
+		placeMarker(box, turnO ? "O" : "X");
+		box.disabled = true;
+		count++;
+		if (count === 100) gameDraw();
+		if (gameMode === "AI" && !turnO && !won) {
+			setTimeout(aiTurn(), 1000);
+		}
+	})
 );
 
 function toggleSettings() {
-  playSound(click1, 0.153);
-  if (setShow) {
-    setCon.style.display = "flex";
-  } else {
-    setTimeout(() => {
-      setCon.style.display = "none";
-    }, 2000);
-  }
-  setttingAni();
-  setShow = !setShow;
+	playSound(click1, 0.153);
+	if (setShow) {
+		setCon.style.display = "flex";
+	} else {
+		setTimeout(() => {
+			setCon.style.display = "none";
+		}, 2000);
+	}
+	setttingAni();
+	setShow = !setShow;
 }
 
 function toggleMusic() {
-  music = !music;
-  if (music) {
-    bg.loop = true;
-    bg.play();
-    musicBtn.innerHTML = enaMusic;
-  } else {
-    bg.pause();
-    musicBtn.innerHTML = disaMusic;
-  }
-  playSound(click1, 0.153);
+	music = !music;
+	if (music) {
+		bg.loop = true;
+		bg.play();
+		musicBtn.innerHTML = enaMusic;
+	} else {
+		bg.pause();
+		musicBtn.innerHTML = disaMusic;
+	}
+	playSound(click1, 0.153);
 }
 
 function toggleSounds() {
-  sound = !sound;
-  if (sound) {
-    setupSounds();
-    soundBtn.innerHTML = enaSound;
-  } else {
-    muteAllSounds();
-    soundBtn.innerHTML = disaSound;
-  }
-  playSound(click1, 0.153);
+	sound = !sound;
+	if (sound) {
+		setupSounds();
+		soundBtn.innerHTML = enaSound;
+	} else {
+		muteAllSounds();
+		soundBtn.innerHTML = disaSound;
+	}
+	playSound(click1, 0.153);
 }
 
 function muteAllSounds() {
-  Object.values(audioList).forEach((audio) => {
-    if (audio !== bg) {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 0;
-    }
-  });
+	Object.values(audioList).forEach((audio) => {
+		if (audio !== bg) {
+			audio.pause();
+			audio.currentTime = 0;
+			audio.volume = 0;
+		}
+	});
 }
 
 function playSound(audio, currentTime = 0) {
-  audio.currentTime = currentTime;
-  audio.play();
+	audio.currentTime = currentTime;
+	audio.play();
 }
 const confettiAnimation = () => {
-  const duration = 3000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+	const duration = 3000;
+	const animationEnd = Date.now() + duration;
+	const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-  const interval = setInterval(() => {
-    const timeLeft = animationEnd - Date.now();
-    if (timeLeft <= 0) return clearInterval(interval);
+	const interval = setInterval(() => {
+		const timeLeft = animationEnd - Date.now();
+		if (timeLeft <= 0) return clearInterval(interval);
 
-    const particleCount = 50 * (timeLeft / duration);
-    const createConfetti = (x) =>
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x, y: Math.random() - 0.2 },
-      });
-    createConfetti(0.2);
-    createConfetti(0.8);
-  }, 250);
+		const particleCount = 50 * (timeLeft / duration);
+		const createConfetti = (x) =>
+			confetti({
+				...defaults,
+				particleCount,
+				origin: { x, y: Math.random() - 0.2 },
+			});
+		createConfetti(0.2);
+		createConfetti(0.8);
+	}, 250);
 };
 
 const aiTurn = async () => {
-  if (turnO || won) return;
+	if (turnO || won) return;
 
-  const emptyBoxes = Array.from(boxes).filter((box) => !box.innerHTML);
-  let chosenBox =
-    emptyBoxes.find((box) => canWin(box, "X")) ||
-    emptyBoxes.find((box) => canWin(box, "O"));
-  if (!chosenBox) {
-    chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
-  }
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      placeMarker(chosenBox, "X");
-      resolve();
-    }, 900);
-  });
+	const emptyBoxes = Array.from(boxes).filter((box) => !box.innerHTML);
+	let chosenBox =
+		emptyBoxes.find((box) => canWin(box, "X")) ||
+		emptyBoxes.find((box) => canWin(box, "O"));
+	if (!chosenBox) {
+		chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
+	}
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			placeMarker(chosenBox, "X");
+			resolve();
+		}, 900);
+	});
 
-  if (!won) {
-    turnO = true;
-    turnID.innerText = "O's Turn";
-  }
-  count++;
+	if (!won) {
+		turnO = true;
+		turnID.innerText = "O's Turn";
+	}
+	count++;
 };
 
 const canWin = (box, marker) => {
-  box.setAttribute("data-marker", marker);
-  const isWinning = winPatterns.some(([a, b, c]) => {
-    const [m1, m2, m3] = [
-      boxes[a].getAttribute("data-marker"),
-      boxes[b].getAttribute("data-marker"),
-      boxes[c].getAttribute("data-marker"),
-    ];
-    return m1 === marker && m2 === marker && m3 === marker;
-  });
-  box.removeAttribute("data-marker");
-  return isWinning;
+	box.setAttribute("data-marker", marker);
+	const isWinning = winPatterns.some(([a, b, c]) => {
+		const [m1, m2, m3] = [
+			boxes[a].getAttribute("data-marker"),
+			boxes[b].getAttribute("data-marker"),
+			boxes[c].getAttribute("data-marker"),
+		];
+		return m1 === marker && m2 === marker && m3 === marker;
+	});
+	box.removeAttribute("data-marker");
+	return isWinning;
 };
 
 resetBtn.addEventListener("click", resetGame);
@@ -371,14 +375,14 @@ musicBtn.addEventListener("click", toggleMusic);
 soundBtn.addEventListener("click", toggleSounds);
 setGear.addEventListener("click", () => toggleSettings());
 document.addEventListener("visibilitychange", function () {
-  document.hidden ? bg.pause() : bg.play();
+	document.hidden ? bg.pause() : bg.play();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const modeSelection = document.querySelectorAll(".ms");
-  modeSelection.forEach((button) =>
-    button.addEventListener("click", (event) =>
-      modeSlt(event.target.dataset.mode)
-    )
-  );
+	const modeSelection = document.querySelectorAll(".ms");
+	modeSelection.forEach((button) =>
+		button.addEventListener("click", (event) =>
+			modeSlt(event.target.dataset.mode)
+		)
+	);
 });
