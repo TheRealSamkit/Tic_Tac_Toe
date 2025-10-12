@@ -194,7 +194,7 @@ body {
 }
 
 .vanish {
-	opacity: 25%;
+	opacity: 45%;
 	transition: opacity 0.5s ease-out;
 }
 

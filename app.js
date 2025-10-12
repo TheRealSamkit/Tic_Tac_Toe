@@ -173,6 +173,7 @@ const showWinner = (winner) => {
 	disableBoxes();
 	winn();
 	if (winner === "X" && gameMode === "AI") {
+		msg.innerText = `Sorry, Winner is ${winner} Try Again!`;
 		return;
 	} else {
 		confettiAnimation();
@@ -311,6 +312,7 @@ function playSound(audio, currentTime = 0) {
 	audio.currentTime = currentTime;
 	audio.play();
 }
+
 const confettiAnimation = () => {
 	const duration = 3000;
 	const animationEnd = Date.now() + duration;
@@ -342,18 +344,26 @@ const aiTurn = async () => {
 	if (!chosenBox) {
 		chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
 	}
-	await new Promise((resolve) => {
-		setTimeout(() => {
-			placeMarker(chosenBox, "X");
-			resolve();
-		}, 900);
-	});
+
+	await caller(chosenBox, "X", 800);
 
 	if (!won) {
 		turnO = true;
 		turnID.innerText = "O's Turn";
 	}
 	count++;
+};
+
+const caller = (box, marker, timeout) => {
+	try {
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(placeMarker(box, marker));
+			}, timeout);
+		});
+	} catch (error) {
+		//console.log(error);
+	}
 };
 
 const canWin = (box, marker) => {
