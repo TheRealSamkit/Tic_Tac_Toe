@@ -5,7 +5,7 @@
 }
 
 body {
-	background-color: #0e2425;
+	background-color: #0e1b25;
 	text-align: center;
 	position: relative;
 	height: 100vh;
@@ -55,14 +55,14 @@ body {
 	width: 18vmin;
 	border: none;
 	font-size: 8vmin;
-	background-color: #0e2425;
+	background-color: #0e1b25;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
 .box:hover {
-	background-color: #143435;
+	background-color: #143035;
 }
 
 #reset-btn,
@@ -74,28 +74,22 @@ body {
 }
 
 .btn {
-	--bg: #000;
-	--hover-bg: #ff8c00;
-	--hover-text: #000;
-	color: #fff;
+	width: auto;
+	color: #ecf0f1;
+	font-size: 17px;
+	background-color: #e67e22;
+	border: 1px solid #f39c12;
+	border-radius: 5px;
 	cursor: pointer;
-	border: 1px solid var(--bg);
-	border-radius: 4px;
-	padding: 0.8em 2em;
-	background: var(--bg);
-	transition: 0.2s;
-}
-
-.btn:hover {
-	color: var(--hover-text);
-	transform: translate(-0.25rem, -0.25rem);
-	background: var(--hover-bg);
-	box-shadow: 0.25rem 0.25rem var(--bg);
+	padding: 10px;
+	box-shadow: 0px 6px 0px #d35400;
+	transition: all 0.1s;
 }
 
 .btn:active {
-	transform: translate(0);
-	box-shadow: none;
+	box-shadow: 0px 2px 0px #d35400;
+	position: relative;
+	top: 2px;
 }
 
 @keyframes sh02 {
@@ -167,7 +161,7 @@ body {
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
-	right: 7px;
+	right: 8px;
 	top: 15px;
 }
 
@@ -181,6 +175,7 @@ body {
 .settings {
 	position: absolute;
 	right: 1px;
+	padding: 5px 2px;
 	width: 3rem;
 	height: 7rem;
 	z-index: 1;
@@ -205,4 +200,14 @@ body {
 	height: 1vmin;
 	border-radius: 25px;
 	border: 3px solid #000;
+}
+
+.svgBtn {
+	padding: 3px;
+}
+
+.svgBtn:hover {
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff30;
 }

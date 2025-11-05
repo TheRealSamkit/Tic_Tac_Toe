@@ -164,7 +164,7 @@ const disableBoxes = () => boxes.forEach((box) => (box.disabled = true));
 
 const showWinner = (winner) => {
 	winner === "X" ? play2++ : play1++;
-	scoreBd.innerText = `O : ${play1} , X : ${play2}`;
+	scoreBd.innerHTML = `O : ${play1} <bold style="font-weight:900;">,</bold> X : ${play2}`;
 	msg.innerText = `Congratulations, Winner is ${winner}`;
 	rmHide(msg);
 	addHide(turnID);
@@ -361,9 +361,7 @@ const caller = (box, marker, timeout) => {
 				resolve(placeMarker(box, marker));
 			}, timeout);
 		});
-	} catch (error) {
-		//console.log(error);
-	}
+	} catch (error) {}
 };
 
 const canWin = (box, marker) => {
