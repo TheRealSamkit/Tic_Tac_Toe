@@ -231,13 +231,13 @@ const gameDraw = () => {
 };
 
 const turnRemover = () => {
-	if (turns.length > 5) {
-		const vanishBox = turns[5];
+	if (turns.length > 6) {
+		const vanishBox = turns[6];
 		const svg = vanishBox?.querySelector("svg");
 		svg?.classList.add("vanish");
 	}
 
-	if (turns.length > 6) {
+	if (turns.length > 7) {
 		const lastTurn = turns.pop();
 		lastTurn.disabled = false;
 		lastTurn.innerHTML = "";
