@@ -1,11 +1,4 @@
-import {
-	appear,
-	markAppear,
-	buttonAni,
-	winn,
-	strokeAni,
-	setttingAni,
-} from "./animation.js";
+import { appear, markAppear, buttonAni, winn as animateWin, strokeAni, setttingAni } from "./animation.js";
 import { audioList } from "./sfx.js";
 // DOM Elements
 const boxes = document.querySelectorAll(".box");
@@ -18,7 +11,7 @@ const starter = document.querySelector("#initializer");
 const stroke = document.querySelector(".stroke");
 const scoreBd = document.querySelector(".score");
 const modeSelect = document.querySelector("#mode-selection");
-const setGear = document.querySelector(".gear");
+const settingsGear = document.querySelector(".gear");
 const setCon = document.querySelector(".settings");
 const musicBtn = document.getElementById("music");
 const soundBtn = document.getElementById("stopSounds");
@@ -38,11 +31,11 @@ let turnO = true,
 const { mark, click, swoosh, click1, bg } = audioList;
 
 // Markers
-const O = `
+const CircleMarkerO = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15vmin" height="15vmin" class="appear">
     <circle cx="50" cy="50" r="40" stroke="blue" stroke-width="10" fill="none" />
   </svg>`;
-const X = `
+const CrossMarkerX = `
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="15vmin" height="15vmin" class="appear">
     <line x1="20" y1="20" x2="80" y2="80" stroke="red" stroke-width="10" />
     <line x1="80" y1="20" x2="20" y2="80" stroke="red" stroke-width="10" />
@@ -80,7 +73,7 @@ const resetGame = () => {
 	playSound(click1, 0.153);
 	swoosh.play();
 	addHide(msg);
-	rmHide(turnID);
+	removeHide(turnID);
 	addHide(stroke);
 	boxes.forEach((box) => {
 		box.innerHTML = "";
@@ -100,7 +93,7 @@ const resetGame = () => {
 
 const initializer = () => {
 	addHide(startBtn);
-	rmHide(modeSelect);
+	removeHide(modeSelect);
 	setupSounds();
 	swoosh.play();
 	buttonAni();
@@ -122,14 +115,14 @@ const modeSlt = (mode) => {
 	gameMode = mode;
 	addHide(modeSelect);
 	addHide(starter);
-	rmHide(gameContainer);
-	rmHide(resetBtn);
+	removeHide(gameContainer);
+	removeHide(resetBtn);
 	swoosh.play();
 	appear();
 	playSound(click1, 0.153);
 };
 
-const rmHide = (element) => {
+const removeHide = (element) => {
 	element.classList.remove("hide");
 };
 
@@ -140,17 +133,16 @@ const addHide = (element) => {
 const placeMarker = (box, marker) => {
 	if (!box.innerHTML) {
 		if (marker === "O") {
-			box.innerHTML = O;
+			box.innerHTML = CircleMarkerO;
 			mark.play();
 		} else {
-			box.innerHTML = X;
+			box.innerHTML = CrossMarkerX;
 			click.play();
 		}
 		box.setAttribute("data-marker", marker);
 		markAppear();
-		const svg = box.querySelector("svg");
 		setTimeout(() => {
-			svg.classList.remove("appear");
+			box.querySelector("svg").classList.remove("appear");
 		}, 600);
 		count++;
 		turns.unshift(box);
@@ -166,12 +158,12 @@ const showWinner = (winner) => {
 	winner === "X" ? play2++ : play1++;
 	scoreBd.innerHTML = `O : ${play1} <bold style="font-weight:900;">,</bold> X : ${play2}`;
 	msg.innerText = `Congratulations, Winner is ${winner}`;
-	rmHide(msg);
+	removeHide(msg);
 	addHide(turnID);
 	resetBtn.innerText = "New Game..?";
 	won = true;
 	disableBoxes();
-	winn();
+	animateWin();
 	if (winner === "X" && gameMode === "AI") {
 		msg.innerText = `Sorry, Winner is ${winner} Try Again!`;
 		return;
@@ -180,26 +172,26 @@ const showWinner = (winner) => {
 	}
 };
 
-const strokeEdi = ([a, b, c]) => {
-	rmHide(stroke);
-	if (b === 4) {
-		if (a === 2 && c === 6) {
+const strokeEdi = ([pos1, pos2, pos3]) => {
+	removeHide(stroke);
+	if (pos2 === 4) {
+		if (pos1 === 2 && pos3 === 6) {
 			strokeAni("-45deg", "0vmin", "0vmin");
-		} else if (a === 0 && c === 8) {
+		} else if (pos1 === 0 && pos3 === 8) {
 			strokeAni("45deg", "0vmin", "0vmin");
-		} else if (a === 1 && c === 7) {
+		} else if (pos1 === 1 && pos3 === 7) {
 			strokeAni("90deg", "0vmin", "0vmin");
 		} else {
 			strokeAni("0deg", "0vmin", "0vmin");
 		}
-	} else if (b === 1 || b === 7) {
-		if (a === 0 && c === 2) {
+	} else if (pos2 === 1 || pos2 === 7) {
+		if (pos1 === 0 && pos3 === 2) {
 			strokeAni("0deg", "0vmin", "-20vmin");
 		} else {
 			strokeAni("0deg", "0vmin", "20vmin");
 		}
 	} else {
-		if (a === 0 && c === 6) {
+		if (pos1 === 0 && pos3 === 6) {
 			strokeAni("90deg", "-20vmin", "0vmin");
 		} else {
 			strokeAni("90deg", "20vmin", "0vmin");
@@ -226,18 +218,18 @@ const checkWinner = () => {
 
 const gameDraw = () => {
 	msg.innerText = `You have taken too much time game is Draw.`;
-	rmHide(msg);
+	removeHide(msg);
 	disableBoxes();
 };
 
 const turnRemover = () => {
-	if (turns.length > 6) {
-		const vanishBox = turns[6];
+	if (turns.length > 5) {
+		const vanishBox = turns[5];
 		const svg = vanishBox?.querySelector("svg");
 		svg?.classList.add("vanish");
 	}
 
-	if (turns.length > 7) {
+	if (turns.length > 6) {
 		const lastTurn = turns.pop();
 		lastTurn.disabled = false;
 		lastTurn.innerHTML = "";
@@ -257,7 +249,7 @@ boxes.forEach((box) =>
 		if (gameMode === "AI" && !turnO && !won) {
 			setTimeout(aiTurn(), 1000);
 		}
-	})
+	}),
 );
 
 function toggleSettings() {
@@ -323,12 +315,7 @@ const confettiAnimation = () => {
 		if (timeLeft <= 0) return clearInterval(interval);
 
 		const particleCount = 50 * (timeLeft / duration);
-		const createConfetti = (x) =>
-			confetti({
-				...defaults,
-				particleCount,
-				origin: { x, y: Math.random() - 0.2 },
-			});
+		const createConfetti = (x) => confetti({ ...defaults, particleCount, origin: { x, y: Math.random() - 0.2 } });
 		createConfetti(0.2);
 		createConfetti(0.8);
 	}, 250);
@@ -338,9 +325,7 @@ const aiTurn = async () => {
 	if (turnO || won) return;
 
 	const emptyBoxes = Array.from(boxes).filter((box) => !box.innerHTML);
-	let chosenBox =
-		emptyBoxes.find((box) => canWin(box, "X")) ||
-		emptyBoxes.find((box) => canWin(box, "O"));
+	let chosenBox = emptyBoxes.find((box) => canWin(box, "X")) || emptyBoxes.find((box) => canWin(box, "O"));
 	if (!chosenBox) {
 		chosenBox = emptyBoxes[Math.floor(Math.random() * emptyBoxes.length)];
 	}
@@ -382,7 +367,7 @@ resetBtn.addEventListener("click", resetGame);
 startBtn.addEventListener("click", initializer);
 musicBtn.addEventListener("click", toggleMusic);
 soundBtn.addEventListener("click", toggleSounds);
-setGear.addEventListener("click", () => toggleSettings());
+settingsGear.addEventListener("click", () => toggleSettings());
 refresh.addEventListener("click", () => location.reload());
 document.addEventListener("visibilitychange", function () {
 	document.hidden ? bg.pause() : bg.play();
@@ -390,9 +375,5 @@ document.addEventListener("visibilitychange", function () {
 
 document.addEventListener("DOMContentLoaded", () => {
 	const modeSelection = document.querySelectorAll(".ms");
-	modeSelection.forEach((button) =>
-		button.addEventListener("click", (event) =>
-			modeSlt(event.target.dataset.mode)
-		)
-	);
+	modeSelection.forEach((button) => button.addEventListener("click", (event) => modeSlt(event.target.dataset.mode)));
 });

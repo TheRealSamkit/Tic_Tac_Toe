@@ -11,14 +11,10 @@ body {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
-}
 
-.winning-line {
-	position: absolute;
-	width: 0;
-	height: 5px;
-	background-color: green;
-	transition: width 0.5s ease-out;
+	main {
+		height: 100vh;
+	}
 }
 
 .container {
@@ -27,6 +23,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	position: relative;
+	margin: 16px 0;
 }
 
 .game {
@@ -75,7 +72,8 @@ body {
 
 .btn {
 	width: auto;
-	color: #ecf0f1;
+	color: #0b0b0b;
+	font-weight: 800;
 	font-size: 17px;
 	background-color: #e67e22;
 	border: 1px solid #f39c12;
